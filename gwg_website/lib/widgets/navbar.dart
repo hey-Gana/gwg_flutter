@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// Represents a single navigation destination.
 class Destination {
@@ -12,7 +13,7 @@ class Destination {
 const List<Destination> destinations = <Destination>[
   Destination('About Me', Icon(Icons.auto_awesome_mosaic_outlined)),
   Destination('Experience', Icon(Icons.beenhere_outlined)),
-  Destination('Education', Icon(Icons.auto_stories_outlined)),
+  Destination('Education', Icon(Icons.school_outlined)),
   Destination('Projects', Icon(Icons.token_outlined)),
   Destination('Hobbies', Icon(Icons.local_play_outlined)),
   Destination("Contact Me", Icon(Icons.contact_phone_outlined)),
@@ -28,12 +29,12 @@ class NavRail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey[200],
+      color: const Color.fromARGB(255, 109, 109, 112),
       child: Column(
         children: [
           Expanded(
             child: NavigationRail(
-              backgroundColor: Colors.grey[200],
+              backgroundColor: const Color.fromARGB(255, 109, 109, 112),
               selectedIndex: selectedIndex,
               labelType: NavigationRailLabelType.all,
               destinations:
@@ -76,7 +77,7 @@ class NavRail extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: PopupMenuButton<int>(
-              icon: const Icon(Icons.accessibility), // Icon inside button
+              icon: const Icon(Icons.webhook_sharp), // Icon inside button
               onSelected: (value) {
                 // Handle the selected value
                 if (value == 0) {
@@ -87,12 +88,17 @@ class NavRail extends StatelessWidget {
                   // Do Option 3 action
                 }
               },
+
               itemBuilder:
                   (context) => [
-                    const PopupMenuItem<int>(value: 0, child: Text('Option 1')),
-                    const PopupMenuItem<int>(value: 1, child: Text('Option 2')),
-                    const PopupMenuItem<int>(value: 2, child: Text('Option 3')),
+                    const PopupMenuItem<int>(value: 0, child: Text('LinkedIn')),
+                    const PopupMenuItem<int>(value: 1, child: Text('Github')),
+                    const PopupMenuItem<int>(
+                      value: 2,
+                      child: Text('Goodreads'),
+                    ),
                   ],
+              color: const Color.fromARGB(255, 109, 109, 112),
             ),
           ),
         ],
