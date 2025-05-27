@@ -5,6 +5,7 @@ import 'route/contactme.dart';
 import 'route/education.dart';
 import 'route/projects.dart';
 import 'route/hobbies.dart';
+//import 'route/resume.dart';
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -21,7 +22,11 @@ class MainApp extends StatelessWidget {
         '/projects': (context) => const Projects(),
         '/hobbies': (context) => const Hobbies(),
         '/contact': (context) => const ContactMe(),
+        //'/resume': (context) => const ResumePage(),
       },
+      onUnknownRoute:
+          (settings) =>
+              MaterialPageRoute(builder: (context) => const HomePage()),
     );
   }
 }

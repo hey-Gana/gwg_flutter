@@ -12,6 +12,7 @@ dependencies:
   url_launcher: ^6.2.4
   timelines_plus: ^1.0.6
   path_provider: ^2.1.2
+  syncfusion_flutter_pdfviewer: ^20.3.48
 
 dev_dependencies:
   flutter_test:
@@ -22,4 +23,6 @@ flutter:
   uses-material-design: true
   assets:
     - images/
-    - assets/
+    - assets/resume/Ganapathi_Subramaniam_S_Resume.pdf
+    
+

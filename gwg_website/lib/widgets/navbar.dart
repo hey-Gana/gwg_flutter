@@ -6,12 +6,12 @@ class Destination {
   final String label;
   final Icon icon;
 
-  const Destination(this.label, this.icon); // constructor of the class
+  const Destination(this.label, this.icon);
 }
 
 /// Static list of destinations.
 const List<Destination> destinations = <Destination>[
-  Destination('About Me', Icon(Icons.auto_awesome_mosaic_outlined)),
+  Destination('About Me', Icon(Icons.g_mobiledata_outlined)),
   Destination('Experience', Icon(Icons.beenhere_outlined)),
   Destination('Education', Icon(Icons.school_outlined)),
   Destination('Projects', Icon(Icons.token_outlined)),
@@ -20,11 +20,27 @@ const List<Destination> destinations = <Destination>[
   Destination('Resume', Icon(Icons.file_present_outlined)),
 ];
 
-/// Main Navigation Rail widget.
 class NavRail extends StatelessWidget {
   final int selectedIndex;
 
   const NavRail({super.key, required this.selectedIndex});
+
+  /// Launch resume PDF in a new browser tab
+  static Future<void> _launchResumePdf() async {
+    final uri = Uri.base.resolve(
+      'assets/resume/Ganapathi_Subramaniam_S_Resume.pdf',
+    );
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+        webOnlyWindowName: '_blank', // Open in new tab
+      );
+    } else {
+      debugPrint('Could not launch $uri');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +62,6 @@ class NavRail extends StatelessWidget {
                         ),
                       )
                       .toList(),
-              // Navigation logic
               onDestinationSelected: (int index) {
                 switch (index) {
                   case 0:
@@ -68,7 +83,7 @@ class NavRail extends StatelessWidget {
                     Navigator.pushReplacementNamed(context, '/contact');
                     break;
                   case 6:
-                    Navigator.pushReplacementNamed(context, '/resume');
+                    _launchResumePdf();
                     break;
                 }
               },
@@ -77,26 +92,34 @@ class NavRail extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: PopupMenuButton<int>(
-              icon: const Icon(Icons.webhook_sharp), // Icon inside button
+              icon: const Icon(Icons.webhook_sharp, color: Colors.white),
               onSelected: (value) {
-                // Handle the selected value
-                if (value == 0) {
-                  // Do Option 1 action
-                } else if (value == 1) {
-                  // Do Option 2 action
-                } else if (value == 2) {
-                  // Do Option 3 action
+                switch (value) {
+                  case 0:
+                    launchUrl(
+                      Uri.parse('https://www.linkedin.com/in/yourprofile'),
+                      mode: LaunchMode.externalApplication,
+                    );
+                    break;
+                  case 1:
+                    launchUrl(
+                      Uri.parse('https://github.com/yourprofile'),
+                      mode: LaunchMode.externalApplication,
+                    );
+                    break;
+                  case 2:
+                    launchUrl(
+                      Uri.parse('https://www.goodreads.com/user/show/yourid'),
+                      mode: LaunchMode.externalApplication,
+                    );
+                    break;
                 }
               },
-
               itemBuilder:
-                  (context) => [
-                    const PopupMenuItem<int>(value: 0, child: Text('LinkedIn')),
-                    const PopupMenuItem<int>(value: 1, child: Text('Github')),
-                    const PopupMenuItem<int>(
-                      value: 2,
-                      child: Text('Goodreads'),
-                    ),
+                  (context) => const [
+                    PopupMenuItem<int>(value: 0, child: Text('LinkedIn')),
+                    PopupMenuItem<int>(value: 1, child: Text('GitHub')),
+                    PopupMenuItem<int>(value: 2, child: Text('Goodreads')),
                   ],
               color: const Color.fromARGB(255, 109, 109, 112),
             ),
