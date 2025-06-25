@@ -3,7 +3,7 @@ class ExperienceModel {
   final String timePeriod;
   final String position;
   final String location;
-  final String descriptions;
+  final List<String> descriptions;
 
   const ExperienceModel({
     required this.companyName,

@@ -1,264 +1,292 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:gwg_website/widgets/navbar.dart';
-import 'package:gwg_website/models/hobbies_model.dart';
 
-// Controls whether each card is expanded: Music, Photos, Books
-final ValueNotifier<List<bool>> expandedStates = ValueNotifier([
-  false,
-  false,
-  false,
-]);
+import '../models/hobbies_model.dart';
+import '../widgets/expandable_card.dart';
+import '../widgets/navbar.dart';
 
-class Hobbies extends StatelessWidget {
+class Hobbies extends StatefulWidget {
   const Hobbies({super.key});
+
+  @override
+  State<Hobbies> createState() => _HobbiesState();
+}
+
+class _HobbiesState extends State<Hobbies> {
+  final List<Music> musicList = [
+    Music(imagePath: 'images/iit.png', youtubeUrl: 'https://www.youtube.com'),
+    Music(
+      imagePath: 'images/sastra.png',
+      youtubeUrl: 'https://www.youtube.com',
+    ),
+  ];
+
+  final List<Photos> photoList = [
+    Photos(imagePath: 'images/iit.png'),
+    Photos(imagePath: 'images/sastra.png'),
+  ];
+
+  final List<Book> bookList = [
+    Book(
+      title: 'Atomic Habits',
+      review:
+          'A practical guide to building good habits and breaking bad ones.',
+      goodreadsUrl:
+          'https://www.goodreads.com/book/show/40121378-atomic-habits',
+    ),
+    Book(
+      title: 'The Alchemist',
+      review: 'A magical story about following your dreams.',
+      goodreadsUrl: 'https://www.goodreads.com/book/show/865.The_Alchemist',
+    ),
+  ];
+
+  final PageController _musicController = PageController(viewportFraction: 0.8);
+  final PageController _photoController = PageController(viewportFraction: 0.8);
+
+  int _selectedIndex = 4; // "Hobbies" index in your nav list
+
+  void _previousPage(PageController controller) {
+    controller.previousPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _nextPage(PageController controller) {
+    controller.nextPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
+  void dispose() {
+    _musicController.dispose();
+    _photoController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(
-        children: [
-          // Navigation Bar
-          const NavRail(selectedIndex: 4),
-
-          // Hobbies section
-          Expanded(
-            child: SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 10),
-                    const Text(
-                      "Hobbies",
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-
-                    ValueListenableBuilder<List<bool>>(
-                      valueListenable: expandedStates,
-                      builder:
-                          (context, states, _) => Column(
-                            children: [
-                              // Music Card with fixed size
-                              SizedBox(
-                                width: 550,
-                                //height: 150,
-                                child: buildExpandableCard(
-                                  title: "Music",
-                                  description:
-                                      "I love playing musical instruments and often record covers of my favorite songs.",
-                                  expanded: states[0],
-                                  onTap: () {
-                                    final updated = List<bool>.from(states);
-                                    updated[0] = !updated[0];
-                                    expandedStates.value = updated;
+      backgroundColor: Colors.black,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFF0009BD), Color(0xFF000000)],
+          ),
+        ),
+        child: Row(
+          children: [
+            NavRail(selectedIndex: _selectedIndex),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                  horizontal: 24,
+                ),
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 600),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ExpandableCard(
+                          title: '🎵 Music Videos',
+                          description:
+                              'Watch some of my favorite instrument performances.',
+                          expandedContent: SizedBox(
+                            height: 220,
+                            child: Stack(
+                              children: [
+                                PageView.builder(
+                                  controller: _musicController,
+                                  itemCount: musicList.length,
+                                  itemBuilder: (context, index) {
+                                    final music = musicList[index];
+                                    return GestureDetector(
+                                      onTap:
+                                          () => launchUrl(
+                                            Uri.parse(music.youtubeUrl),
+                                          ),
+                                      child: Container(
+                                        margin: const EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            15,
+                                          ),
+                                          image: DecorationImage(
+                                            image: AssetImage(music.imagePath),
+                                            fit: BoxFit.cover,
+                                          ),
+                                          boxShadow: const [
+                                            BoxShadow(
+                                              color: Colors.black54,
+                                              blurRadius: 5,
+                                              offset: Offset(0, 3),
+                                            ),
+                                          ],
+                                        ),
+                                        width: 300,
+                                      ),
+                                    );
                                   },
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children:
-                                          musicList.map((music) {
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                    vertical: 8,
-                                                  ),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Image.asset(
-                                                    music.imagePath,
-                                                    height: 100,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                  const SizedBox(height: 4),
-                                                  InkWell(
-                                                    onTap:
-                                                        () => launchUrl(
-                                                          Uri.parse(
-                                                            music.youtubeUrl,
-                                                          ),
-                                                        ),
-                                                    child: Text(
-                                                      music.youtubeUrl,
-                                                      style: const TextStyle(
-                                                        color: Colors.blue,
-                                                        decoration:
-                                                            TextDecoration
-                                                                .underline,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          }).toList(),
+                                ),
+                                Positioned(
+                                  left: 0,
+                                  top: 0,
+                                  bottom: 0,
+                                  child: Center(
+                                    child: IconButton(
+                                      icon: const Icon(
+                                        Icons.arrow_back_ios,
+                                        color: Colors.white70,
+                                      ),
+                                      onPressed:
+                                          () => _previousPage(_musicController),
                                     ),
                                   ),
                                 ),
-                              ),
-
-                              const SizedBox(height: 16),
-
-                              // Photos Card with fixed size
-                              SizedBox(
-                                width: 550,
-                                //height: 320,
-                                child: buildExpandableCard(
-                                  title: "Photos",
-                                  description:
-                                      "Photography is my way of capturing stories in light. Here are some of my favorites.",
-                                  expanded: states[1],
-                                  onTap: () {
-                                    final updated = List<bool>.from(states);
-                                    updated[1] = !updated[1];
-                                    expandedStates.value = updated;
-                                  },
-                                  child: SingleChildScrollView(
-                                    child: Wrap(
-                                      spacing: 12,
-                                      runSpacing: 12,
-                                      children:
-                                          photoList.map((photo) {
-                                            return ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              child: Image.asset(
-                                                photo.imagePath,
-                                                height: 100,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            );
-                                          }).toList(),
+                                Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  bottom: 0,
+                                  child: Center(
+                                    child: IconButton(
+                                      icon: const Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: Colors.white70,
+                                      ),
+                                      onPressed:
+                                          () => _nextPage(_musicController),
                                     ),
                                   ),
                                 ),
-                              ),
-
-                              const SizedBox(height: 16),
-
-                              // Books Card with fixed size
-                              SizedBox(
-                                width: 550,
-                                //height: 320,
-                                child: buildExpandableCard(
-                                  title: "Books",
-                                  description:
-                                      "I enjoy reading and reviewing books across various genres.",
-                                  expanded: states[2],
-                                  onTap: () {
-                                    final updated = List<bool>.from(states);
-                                    updated[2] = !updated[2];
-                                    expandedStates.value = updated;
-                                  },
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children:
-                                          bookList.map((book) {
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                    vertical: 8,
-                                                  ),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    book.title,
-                                                    style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(height: 4),
-                                                  Text(book.review),
-                                                ],
-                                              ),
-                                            );
-                                          }).toList(),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
+                        ),
+                        const SizedBox(height: 20),
+                        ExpandableCard(
+                          title: '📸 Photography',
+                          description:
+                              'Snapshots I’ve taken on my photography journey.',
+                          expandedContent: SizedBox(
+                            height: 220,
+                            child: Stack(
+                              children: [
+                                PageView.builder(
+                                  controller: _photoController,
+                                  itemCount: photoList.length,
+                                  itemBuilder: (context, index) {
+                                    final photo = photoList[index];
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        image: DecorationImage(
+                                          image: AssetImage(photo.imagePath),
+                                          fit: BoxFit.cover,
+                                        ),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: Colors.black54,
+                                            blurRadius: 5,
+                                            offset: Offset(0, 3),
+                                          ),
+                                        ],
+                                      ),
+                                      width: 300,
+                                    );
+                                  },
+                                ),
+                                Positioned(
+                                  left: 0,
+                                  top: 0,
+                                  bottom: 0,
+                                  child: Center(
+                                    child: IconButton(
+                                      icon: const Icon(
+                                        Icons.arrow_back_ios,
+                                        color: Colors.white70,
+                                      ),
+                                      onPressed:
+                                          () => _previousPage(_photoController),
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  bottom: 0,
+                                  child: Center(
+                                    child: IconButton(
+                                      icon: const Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: Colors.white70,
+                                      ),
+                                      onPressed:
+                                          () => _nextPage(_photoController),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        ExpandableCard(
+                          title: '📚 Book Reviews',
+                          description:
+                              'My thoughts on books I’ve read recently.',
+                          expandedContent: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children:
+                                bookList.map((book) {
+                                  return ListTile(
+                                    title: Text(
+                                      book.title,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      book.review,
+                                      style: const TextStyle(
+                                        color: Colors.white70,
+                                      ),
+                                    ),
+                                    trailing: IconButton(
+                                      icon: const Icon(
+                                        Icons.open_in_new,
+                                        color: Colors.white,
+                                      ),
+                                      onPressed:
+                                          () => launchUrl(
+                                            Uri.parse(book.goodreadsUrl),
+                                          ),
+                                    ),
+                                  );
+                                }).toList(),
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 20),
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
-
-// Widget for expandable cards
-Widget buildExpandableCard({
-  required String title,
-  required String description,
-  required bool expanded,
-  required VoidCallback onTap,
-  required Widget child,
-}) {
-  return Card(
-    elevation: 4,
-    child: InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(height: 8),
-            Text(description),
-            const SizedBox(height: 12),
-            if (expanded) child,
-          ],
-        ),
-      ),
-    ),
-  );
-}
-
-// Sample Data
-final List<Music> musicList = [
-  Music(imagePath: 'images/', youtubeUrl: 'https://youtube.com/example1'),
-  Music(
-    imagePath: 'assets/images/guitar.jpg',
-    youtubeUrl: 'https://youtube.com/example2',
-  ),
-];
-
-final List<Photos> photoList = [
-  Photos(imagePath: 'assets/images/photo1.jpg'),
-  Photos(imagePath: 'assets/images/photo2.jpg'),
-];
-
-final List<Book> bookList = [
-  Book(
-    title: 'The Alchemist',
-    review:
-        'A beautiful story about following your dreams and listening to your heart.',
-  ),
-  Book(
-    title: '1984',
-    review:
-        'A chilling dystopian novel that explores surveillance and freedom.',
-  ),
-];

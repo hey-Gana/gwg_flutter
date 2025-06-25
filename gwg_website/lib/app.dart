@@ -20,13 +20,19 @@ class MainApp extends StatelessWidget {
         '/experience': (context) => const Experience(),
         '/education': (context) => const Education(),
         '/projects': (context) => const Projects(),
-        '/hobbies': (context) => const Hobbies(),
+        '/hobbies': (context) => Hobbies(),
         '/contact': (context) => const ContactMe(),
         //'/resume': (context) => const ResumePage(),
       },
       onUnknownRoute:
           (settings) =>
               MaterialPageRoute(builder: (context) => const HomePage()),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.blueAccent,
+          brightness: Brightness.dark,
+        ),
+      ),
     );
   }
 }

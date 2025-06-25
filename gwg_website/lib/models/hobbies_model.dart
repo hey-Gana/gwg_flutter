@@ -7,14 +7,14 @@ class Music {
 
 class Photos {
   final String imagePath;
-  final String? description;
 
-  Photos({required this.imagePath, this.description});
+  Photos({required this.imagePath});
 }
 
 class Book {
   final String title;
   final String review;
+  final String goodreadsUrl;
 
-  Book({required this.title, required this.review});
+  Book({required this.title, required this.review, required this.goodreadsUrl});
 }

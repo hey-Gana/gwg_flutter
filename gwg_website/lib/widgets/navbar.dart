@@ -50,7 +50,7 @@ class NavRail extends StatelessWidget {
         children: [
           Expanded(
             child: NavigationRail(
-              backgroundColor: const Color.fromARGB(255, 109, 109, 112),
+              //backgroundColor: const Color.fromARGB(255, 109, 109, 112),
               selectedIndex: selectedIndex,
               labelType: NavigationRailLabelType.all,
               destinations:
