@@ -1,8 +1,7 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../models/hobbies_model.dart';
-import '../widgets/expandable_card.dart';
 import '../widgets/navbar.dart';
 
 class Hobbies extends StatefulWidget {
@@ -14,16 +13,22 @@ class Hobbies extends StatefulWidget {
 
 class _HobbiesState extends State<Hobbies> {
   final List<Music> musicList = [
-    Music(imagePath: 'images/iit.png', youtubeUrl: 'https://www.youtube.com'),
     Music(
-      imagePath: 'images/sastra.png',
+      imagePath: 'assets/images/iit.png',
+      youtubeUrl: 'https://www.youtube.com',
+    ),
+    Music(
+      imagePath: 'assets/images/sastra.png',
       youtubeUrl: 'https://www.youtube.com',
     ),
   ];
 
   final List<Photos> photoList = [
-    Photos(imagePath: 'images/iit.png'),
-    Photos(imagePath: 'images/sastra.png'),
+    Photos(imagePath: 'assets/images/iit.png', caption: 'IIT campus view.'),
+    Photos(
+      imagePath: 'assets/images/sastra.png',
+      caption: 'Sastra University.',
+    ),
   ];
 
   final List<Book> bookList = [
@@ -43,22 +48,8 @@ class _HobbiesState extends State<Hobbies> {
 
   final PageController _musicController = PageController(viewportFraction: 0.8);
   final PageController _photoController = PageController(viewportFraction: 0.8);
-
-  int _selectedIndex = 4; // "Hobbies" index in your nav list
-
-  void _previousPage(PageController controller) {
-    controller.previousPage(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
-  }
-
-  void _nextPage(PageController controller) {
-    controller.nextPage(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
-  }
+  final List<bool> _isExpanded = [false, false, false];
+  final int _selectedIndex = 4;
 
   @override
   void dispose() {
@@ -84,198 +75,147 @@ class _HobbiesState extends State<Hobbies> {
             NavRail(selectedIndex: _selectedIndex),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20,
-                  horizontal: 24,
-                ),
+                padding: const EdgeInsets.all(32),
                 child: Center(
                   child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 600),
+                    constraints: const BoxConstraints(maxWidth: 900),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ExpandableCard(
-                          title: '🎵 Music Videos',
-                          description:
-                              'Watch some of my favorite instrument performances.',
-                          expandedContent: SizedBox(
-                            height: 220,
-                            child: Stack(
-                              children: [
-                                PageView.builder(
-                                  controller: _musicController,
-                                  itemCount: musicList.length,
-                                  itemBuilder: (context, index) {
-                                    final music = musicList[index];
+                        const Center(
+                          child: Text(
+                            "Hobbies",
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 32),
+                        glassyContainer(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: const [
+                              Text(
+                                "Say hi to my fun side:",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                "I believe in constantly learning and growing, which is why I take up a new hobby every year. This tradition began during the COVID-19 pandemic and has since become a cherished part of my life. Each year brings a new challenge and a fresh perspective, keeping my creative spirit alive.",
+                                style: TextStyle(color: Colors.white70),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+
+                        glassyContainer(
+                          child: _buildExpandableCard(
+                            index: 0,
+                            title: 'My Love for Music',
+                            description:
+                                'Music has been a big part of my life since childhood. Having completed 7 grades and earned certification from the London College of Music (LCM) in electronic keyboard, I’ve developed a deep appreciation for the intricacies of music and the ability to replicate them. I often transpose this knowledge to other instruments like the Kalimba, Guitar, Violin, and Flute. I believe music is the language of nature, and I consider myself an ambassador of it.',
+                            expandedContent: _buildCarousel(
+                              controller: _musicController,
+                              items:
+                                  musicList.map((music) {
                                     return GestureDetector(
                                       onTap:
                                           () => launchUrl(
                                             Uri.parse(music.youtubeUrl),
                                           ),
-                                      child: Container(
-                                        margin: const EdgeInsets.symmetric(
-                                          horizontal: 10,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            15,
+                                      child: _buildImageCard(music.imagePath),
+                                    );
+                                  }).toList(),
+                              onBack: () => _previousPage(_musicController),
+                              onForward: () => _nextPage(_musicController),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+
+                        glassyContainer(
+                          child: _buildExpandableCard(
+                            index: 1,
+                            title: 'Timeless Photography',
+                            description:
+                                'After watching a movie during COVID, I realized how beautiful photography is—it has the power to freeze time. Every time we look back at pictures, they often evoke a sense of nostalgia. Still photography can be interpreted in many ways, and I want to make my own attempt at capturing and sharing my perspective. Who knew shadows and depth could reveal so much beauty?',
+                            expandedContent: _buildCarousel(
+                              controller: _photoController,
+                              items:
+                                  photoList.map((photo) {
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        _buildImageCard(photo.imagePath),
+                                        const SizedBox(height: 8),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 10,
                                           ),
-                                          image: DecorationImage(
-                                            image: AssetImage(music.imagePath),
-                                            fit: BoxFit.cover,
-                                          ),
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              color: Colors.black54,
-                                              blurRadius: 5,
-                                              offset: Offset(0, 3),
+                                          child: Text(
+                                            photo.caption ?? '',
+                                            style: const TextStyle(
+                                              color: Colors.white70,
+                                              fontSize: 14,
+                                              fontStyle: FontStyle.italic,
                                             ),
-                                          ],
+                                            textAlign: TextAlign.center,
+                                          ),
                                         ),
-                                        width: 300,
-                                      ),
+                                      ],
                                     );
-                                  },
-                                ),
-                                Positioned(
-                                  left: 0,
-                                  top: 0,
-                                  bottom: 0,
-                                  child: Center(
-                                    child: IconButton(
-                                      icon: const Icon(
-                                        Icons.arrow_back_ios,
-                                        color: Colors.white70,
-                                      ),
-                                      onPressed:
-                                          () => _previousPage(_musicController),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  right: 0,
-                                  top: 0,
-                                  bottom: 0,
-                                  child: Center(
-                                    child: IconButton(
-                                      icon: const Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: Colors.white70,
-                                      ),
-                                      onPressed:
-                                          () => _nextPage(_musicController),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                                  }).toList(),
+                              onBack: () => _previousPage(_photoController),
+                              onForward: () => _nextPage(_photoController),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20),
-                        ExpandableCard(
-                          title: '📸 Photography',
-                          description:
-                              'Snapshots I’ve taken on my photography journey.',
-                          expandedContent: SizedBox(
-                            height: 220,
-                            child: Stack(
-                              children: [
-                                PageView.builder(
-                                  controller: _photoController,
-                                  itemCount: photoList.length,
-                                  itemBuilder: (context, index) {
-                                    final photo = photoList[index];
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(
-                                        horizontal: 10,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15),
-                                        image: DecorationImage(
-                                          image: AssetImage(photo.imagePath),
-                                          fit: BoxFit.cover,
+                        const SizedBox(height: 24),
+
+                        glassyContainer(
+                          child: _buildExpandableCard(
+                            index: 2,
+                            title: 'Book Reviews',
+                            description:
+                                'I once came across a quote that said, "Reading without reflecting is like eating without digesting." That line changed the way I approach books. Now, for every book I read, I make it a point to write a detailed review or summary—capturing what I liked, what I understood, and sharing my personal reflections. I believe that while words may never fully capture the depth of emotions and feelings, that shouldn’t stop us from trying. This habit has inspired me to write poems and verses in both Tamil and English, and has even sparked meaningful conversations with strangers.',
+                            expandedContent: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children:
+                                  bookList.map((book) {
+                                    return ListTile(
+                                      title: Text(
+                                        book.title,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                        boxShadow: const [
-                                          BoxShadow(
-                                            color: Colors.black54,
-                                            blurRadius: 5,
-                                            offset: Offset(0, 3),
-                                          ),
-                                        ],
                                       ),
-                                      width: 300,
+                                      subtitle: Text(
+                                        book.review,
+                                        style: const TextStyle(
+                                          color: Colors.white70,
+                                        ),
+                                      ),
+                                      trailing: IconButton(
+                                        icon: const Icon(
+                                          Icons.open_in_new,
+                                          color: Colors.white,
+                                        ),
+                                        onPressed:
+                                            () => launchUrl(
+                                              Uri.parse(book.goodreadsUrl),
+                                            ),
+                                      ),
                                     );
-                                  },
-                                ),
-                                Positioned(
-                                  left: 0,
-                                  top: 0,
-                                  bottom: 0,
-                                  child: Center(
-                                    child: IconButton(
-                                      icon: const Icon(
-                                        Icons.arrow_back_ios,
-                                        color: Colors.white70,
-                                      ),
-                                      onPressed:
-                                          () => _previousPage(_photoController),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  right: 0,
-                                  top: 0,
-                                  bottom: 0,
-                                  child: Center(
-                                    child: IconButton(
-                                      icon: const Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: Colors.white70,
-                                      ),
-                                      onPressed:
-                                          () => _nextPage(_photoController),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                                  }).toList(),
                             ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        ExpandableCard(
-                          title: '📚 Book Reviews',
-                          description:
-                              'My thoughts on books I’ve read recently.',
-                          expandedContent: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children:
-                                bookList.map((book) {
-                                  return ListTile(
-                                    title: Text(
-                                      book.title,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    subtitle: Text(
-                                      book.review,
-                                      style: const TextStyle(
-                                        color: Colors.white70,
-                                      ),
-                                    ),
-                                    trailing: IconButton(
-                                      icon: const Icon(
-                                        Icons.open_in_new,
-                                        color: Colors.white,
-                                      ),
-                                      onPressed:
-                                          () => launchUrl(
-                                            Uri.parse(book.goodreadsUrl),
-                                          ),
-                                    ),
-                                  );
-                                }).toList(),
                           ),
                         ),
                       ],
@@ -286,6 +226,142 @@ class _HobbiesState extends State<Hobbies> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget glassyContainer({required Widget child}) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.3),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: child,
+        ),
+      ),
+    );
+  }
+
+  void _previousPage(PageController controller) {
+    controller.previousPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _nextPage(PageController controller) {
+    controller.nextPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  Widget _buildExpandableCard({
+    required int index,
+    required String title,
+    required String description,
+    required Widget expandedContent,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          GestureDetector(
+            onTap:
+                () => setState(() => _isExpanded[index] = !_isExpanded[index]),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Icon(
+                  _isExpanded[index] ? Icons.expand_less : Icons.expand_more,
+                  color: Colors.white70,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(description, style: const TextStyle(color: Colors.white70)),
+          if (_isExpanded[index]) ...[
+            const SizedBox(height: 16),
+            expandedContent,
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCarousel({
+    required PageController controller,
+    required List<Widget> items,
+    required VoidCallback onBack,
+    required VoidCallback onForward,
+  }) {
+    return SizedBox(
+      height: 250,
+      child: Stack(
+        children: [
+          PageView.builder(
+            controller: controller,
+            itemCount: items.length,
+            itemBuilder: (context, index) => items[index],
+          ),
+          Positioned(
+            left: 0,
+            top: 0,
+            bottom: 0,
+            child: Center(
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back_ios, color: Colors.white70),
+                onPressed: onBack,
+              ),
+            ),
+          ),
+          Positioned(
+            right: 0,
+            top: 0,
+            bottom: 0,
+            child: Center(
+              child: IconButton(
+                icon: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white70,
+                ),
+                onPressed: onForward,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildImageCard(String path) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 10),
+      width: 300,
+      height: 180,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        image: DecorationImage(image: AssetImage(path), fit: BoxFit.cover),
+        boxShadow: const [
+          BoxShadow(color: Colors.black54, blurRadius: 5, offset: Offset(0, 3)),
+        ],
       ),
     );
   }

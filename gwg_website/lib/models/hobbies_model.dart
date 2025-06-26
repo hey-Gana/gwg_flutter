@@ -7,8 +7,9 @@ class Music {
 
 class Photos {
   final String imagePath;
+  final String caption;
 
-  Photos({required this.imagePath});
+  Photos({required this.imagePath, required this.caption});
 }
 
 class Book {

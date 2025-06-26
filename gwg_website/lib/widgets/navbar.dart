@@ -16,7 +16,7 @@ const List<Destination> destinations = <Destination>[
   Destination('Education', Icon(Icons.school_outlined)),
   Destination('Projects', Icon(Icons.token_outlined)),
   Destination('Hobbies', Icon(Icons.local_play_outlined)),
-  Destination("Contact Me", Icon(Icons.contact_phone_outlined)),
+  // Destination("Contact Me", Icon(Icons.contact_phone_outlined)),
   Destination('Resume', Icon(Icons.file_present_outlined)),
 ];
 
@@ -79,10 +79,10 @@ class NavRail extends StatelessWidget {
                   case 4:
                     Navigator.pushReplacementNamed(context, '/hobbies');
                     break;
+                  // case 5:
+                  //   Navigator.pushReplacementNamed(context, '/contact');
+                  //   break;
                   case 5:
-                    Navigator.pushReplacementNamed(context, '/contact');
-                    break;
-                  case 6:
                     _launchResumePdf();
                     break;
                 }
@@ -92,24 +92,31 @@ class NavRail extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: PopupMenuButton<int>(
-              icon: const Icon(Icons.webhook_sharp, color: Colors.white),
+              icon: const Icon(
+                Icons.webhook_sharp,
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
               onSelected: (value) {
                 switch (value) {
                   case 0:
                     launchUrl(
-                      Uri.parse('https://www.linkedin.com/in/yourprofile'),
+                      Uri.parse(
+                        'https://www.linkedin.com/in/ganapathi-subramaniam/',
+                      ),
                       mode: LaunchMode.externalApplication,
                     );
                     break;
                   case 1:
                     launchUrl(
-                      Uri.parse('https://github.com/yourprofile'),
+                      Uri.parse('https://github.com/hey-Gana'),
                       mode: LaunchMode.externalApplication,
                     );
                     break;
                   case 2:
                     launchUrl(
-                      Uri.parse('https://www.goodreads.com/user/show/yourid'),
+                      Uri.parse(
+                        'https://www.goodreads.com/user/show/52093646-gana',
+                      ),
                       mode: LaunchMode.externalApplication,
                     );
                     break;
@@ -121,7 +128,7 @@ class NavRail extends StatelessWidget {
                     PopupMenuItem<int>(value: 1, child: Text('GitHub')),
                     PopupMenuItem<int>(value: 2, child: Text('Goodreads')),
                   ],
-              color: const Color.fromARGB(255, 109, 109, 112),
+              color: const Color.fromARGB(255, 0, 0, 0),
             ),
           ),
         ],
