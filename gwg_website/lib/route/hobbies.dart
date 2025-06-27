@@ -11,38 +11,54 @@ class Hobbies extends StatefulWidget {
   State<Hobbies> createState() => _HobbiesState();
 }
 
+//Music
 class _HobbiesState extends State<Hobbies> {
   final List<Music> musicList = [
     Music(
-      imagePath: 'assets/images/iit.png',
-      youtubeUrl: 'https://www.youtube.com',
+      imagePath: 'images/yt1.jpg',
+      youtubeUrl: 'https://youtu.be/erxkUQD3vhE?si=imq-k-l0Twer2Idu',
     ),
     Music(
-      imagePath: 'assets/images/sastra.png',
-      youtubeUrl: 'https://www.youtube.com',
+      imagePath: 'images/yt2.jpg',
+      youtubeUrl: 'https://youtu.be/0-BIHAoBNa0?si=rS948DXFNGdvE4YW',
     ),
   ];
+  //Photography Section
+  // final List<Photos> photoList = [
+  //   Photos(imagePath: 'images/bridge.JPG', caption: 'Bridge to Somewhere'),
+  //   Photos(imagePath: 'images/camo.JPG', caption: 'Camouflaged Beauty'),
+  //   Photos(
+  //     imagePath: 'images/carpet_of_clouds.JPG',
+  //     caption: 'Carpet of Clouds',
+  //   ),
+  //   Photos(
+  //     imagePath: 'images/cottonCandyClouds.JPG',
+  //     caption: 'Cotton Candy Clouds',
+  //   ),
+  //   Photos(imagePath: 'images/cracked_hope.JPG', caption: 'Cracked Hope'),
+  //   Photos(imagePath: 'images/ducks.JPG', caption: 'Ripple Effect'),
+  //   Photos(imagePath: 'images/for_peace.JPG', caption: 'Peace through Safety!'),
+  //   Photos(
+  //     imagePath: 'images/freedom_slavery.JPG',
+  //     caption: 'Freedom is Slavery.',
+  //   ),
+  //   Photos(imagePath: 'images/lost_pride.JPG', caption: 'Lost Pride'),
+  //   Photos(imagePath: 'images/peace.JPG', caption: 'Moments of Peace'),
+  //   Photos(imagePath: 'images/setSail.JPG', caption: 'Ready to set sail!'),
+  //   Photos(
+  //     imagePath: 'images/stairwaysToHeaven.JPG',
+  //     caption: 'Stairways to Heaven',
+  //   ),
+  // ];
 
-  final List<Photos> photoList = [
-    Photos(imagePath: 'assets/images/iit.png', caption: 'IIT campus view.'),
-    Photos(
-      imagePath: 'assets/images/sastra.png',
-      caption: 'Sastra University.',
-    ),
-  ];
-
+  //Book Reviews
   final List<Book> bookList = [
     Book(
-      title: 'Atomic Habits',
+      title: 'Connect with me on Goodreads!',
       review:
-          'A practical guide to building good habits and breaking bad ones.',
+          'Explore my book reviews, and if something resonates with you, feel free to share your thoughts.',
       goodreadsUrl:
-          'https://www.goodreads.com/book/show/40121378-atomic-habits',
-    ),
-    Book(
-      title: 'The Alchemist',
-      review: 'A magical story about following your dreams.',
-      goodreadsUrl: 'https://www.goodreads.com/book/show/865.The_Alchemist',
+          'https://www.goodreads.com/review/list/52093646-gana?shelf=read&view=covers',
     ),
   ];
 
@@ -112,6 +128,7 @@ class _HobbiesState extends State<Hobbies> {
                           child: Text("Hobbies", style: titleTextStyle),
                         ),
                         const SizedBox(height: 32),
+
                         glassyContainer(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -128,12 +145,13 @@ class _HobbiesState extends State<Hobbies> {
                             ],
                           ),
                         ),
+
                         const SizedBox(height: 24),
 
                         glassyContainer(
                           child: _buildExpandableCard(
                             index: 0,
-                            title: 'My Love for Music',
+                            title: 'My Love for Music:',
                             description:
                                 'Music has been a big part of my life since childhood. Having completed 7 grades and earned certification from the London College of Music (LCM) in electronic keyboard, I’ve developed a deep appreciation for the intricacies of music and the ability to replicate them. I often transpose this knowledge to other instruments like the Kalimba, Guitar, Violin, and Flute. I believe music is the language of nature, and I consider myself an ambassador of it.',
                             expandedContent: _buildCarousel(
@@ -155,49 +173,41 @@ class _HobbiesState extends State<Hobbies> {
                             descriptionTextStyle: bodyTextStyle,
                           ),
                         ),
+
                         const SizedBox(height: 24),
 
-                        glassyContainer(
-                          child: _buildExpandableCard(
-                            index: 1,
-                            title: 'Timeless Photography',
-                            description:
-                                'After watching a movie during COVID, I realized how beautiful photography is—it has the power to freeze time. Every time we look back at pictures, they often evoke a sense of nostalgia. Still photography can be interpreted in many ways, and I want to make my own attempt at capturing and sharing my perspective. Who knew shadows and depth could reveal so much beauty?',
-                            expandedContent: _buildCarousel(
-                              controller: _photoController,
-                              items:
-                                  photoList.map((photo) {
-                                    return Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: [
-                                        _buildImageCard(photo.imagePath),
-                                        const SizedBox(height: 8),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 10,
-                                          ),
-                                          child: Text(
-                                            photo.caption,
-                                            style: bodyTextStyle.copyWith(
-                                              fontStyle: FontStyle.italic,
-                                              fontSize: 14,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  }).toList(),
-                              onBack: () => _previousPage(_photoController),
-                              onForward: () => _nextPage(_photoController),
-                            ),
-                            expandedTitleTextStyle: expandedTitleTextStyle,
-                            descriptionTextStyle: bodyTextStyle,
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-
+                        // glassyContainer(
+                        //   child: _buildExpandableCard(
+                        //     index: 1,
+                        //     title: 'Timeless Photography',
+                        //     description: 'After watching a movie during COVID, I realized how beautiful photography is—it has the power to freeze time. Every time we look back at pictures, they often evoke a sense of nostalgia. Still photography can be interpreted in many ways, and I want to make my own attempt at capturing and sharing my perspective. Who knew shadows and depth could reveal so much beauty?',
+                        //     expandedContent: _buildCarousel(
+                        //       controller: _photoController,
+                        //       items:
+                        //           photoList.map((photo) {
+                        //             return Column(
+                        //               children: [
+                        //                 _buildImageCard(photo.imagePath),
+                        //                 const SizedBox(height: 8),
+                        //                 Text(
+                        //                   photo.caption,
+                        //                   style: bodyTextStyle.copyWith(
+                        //                     fontStyle: FontStyle.italic,
+                        //                     fontSize: 14,
+                        //                   ),
+                        //                   textAlign: TextAlign.center,
+                        //                 ),
+                        //               ],
+                        //             );
+                        //           }).toList(),
+                        //       onBack: () => _previousPage(_photoController),
+                        //       onForward: () => _nextPage(_photoController),
+                        //     ),
+                        //     expandedTitleTextStyle: expandedTitleTextStyle,
+                        //     descriptionTextStyle: bodyTextStyle,
+                        //   ),
+                        // ),
+                        // const SizedBox(height: 24),
                         glassyContainer(
                           child: _buildExpandableCard(
                             index: 2,
@@ -205,7 +215,6 @@ class _HobbiesState extends State<Hobbies> {
                             description:
                                 'I once came across a quote that said, "Reading without reflecting is like eating without digesting." That line changed the way I approach books. Now, for every book I read, I make it a point to write a detailed review or summary—capturing what I liked, what I understood, and sharing my personal reflections. I believe that while words may never fully capture the depth of emotions and feelings, that shouldn’t stop us from trying. This habit has inspired me to write poems and verses in both Tamil and English, and has even sparked meaningful conversations with strangers.',
                             expandedContent: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               children:
                                   bookList.map((book) {
                                     return ListTile(
@@ -328,8 +337,8 @@ class _HobbiesState extends State<Hobbies> {
     required VoidCallback onBack,
     required VoidCallback onForward,
   }) {
-    return SizedBox(
-      height: 250,
+    return AspectRatio(
+      aspectRatio: 16 / 9,
       child: Stack(
         children: [
           PageView.builder(
@@ -370,11 +379,12 @@ class _HobbiesState extends State<Hobbies> {
   Widget _buildImageCard(String path) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10),
-      width: 300,
-      height: 180,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        image: DecorationImage(image: AssetImage(path), fit: BoxFit.cover),
+        image: DecorationImage(
+          image: AssetImage(path),
+          fit: BoxFit.contain, // Ensures image is fully visible
+        ),
         boxShadow: const [
           BoxShadow(color: Colors.black54, blurRadius: 5, offset: Offset(0, 3)),
         ],

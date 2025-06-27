@@ -81,7 +81,7 @@ class HomePage extends StatelessWidget {
                                                 ),
                                                 const SizedBox(height: 10),
                                                 Text(
-                                                  "Driven by curiosity and adaptability, I specialize in bridging the gap between innovation and business needs. My mission is simple yet impactful: bringing awe in Automation & Quality in everything I do.",
+                                                  "Driven by curiosity and adaptability, I specialize in bridging the gap between innovation and business needs. My mission is simple yet impactful: bringing the 'awe' in Automation & Quality in everything I do.",
                                                   style: textStyle,
                                                 ),
                                                 const SizedBox(height: 10),
