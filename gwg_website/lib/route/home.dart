@@ -13,16 +13,12 @@ class HomePage extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF0009BD), // #0009bd
-              Color(0xFF000000), // #000000
-            ],
+            colors: [Color(0xFF0009BD), Color(0xFF000000)],
           ),
         ),
         child: Row(
           children: [
-            const NavRail(selectedIndex: 0), // Nav bar (no blur)
-
+            const NavRail(selectedIndex: 0),
             Expanded(
               child: Center(
                 child: ConstrainedBox(
@@ -32,12 +28,8 @@ class HomePage extends StatelessWidget {
                     child: BackdropFilter(
                       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                       child: Container(
-                        color: const Color.fromARGB(
-                          255,
-                          0,
-                          0,
-                          0,
-                        ).withOpacity(0.3),
+                        // 👇 Fixed: Replaced deprecated .withOpacity()
+                        color: const Color.fromARGB(255, 0, 0, 0).withAlpha(76),
                         child: SingleChildScrollView(
                           child: Padding(
                             padding: const EdgeInsets.all(32.0),
@@ -51,6 +43,7 @@ class HomePage extends StatelessWidget {
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,
+                                      fontFamily: 'RobotoMono',
                                     ),
                                   ),
                                 ),
@@ -60,6 +53,7 @@ class HomePage extends StatelessWidget {
                                     final textStyle = const TextStyle(
                                       fontSize: 16,
                                       color: Colors.white,
+                                      fontFamily: 'RobotoMono',
                                     );
 
                                     if (constraints.maxWidth > 850) {
@@ -77,6 +71,7 @@ class HomePage extends StatelessWidget {
                                                   "Hello, I’m S.Ganapathi Subramaniam (Gana)!",
                                                   style: textStyle.copyWith(
                                                     fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
                                                 const SizedBox(height: 10),
@@ -92,7 +87,9 @@ class HomePage extends StatelessWidget {
                                                 const SizedBox(height: 10),
                                                 Text(
                                                   "My motto: LISTEN | LEARN | LEAD",
-                                                  style: textStyle,
+                                                  style: textStyle.copyWith(
+                                                    fontStyle: FontStyle.italic,
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -113,6 +110,7 @@ class HomePage extends StatelessWidget {
                                                     'Ganapathi Subramaniam',
                                                     style: TextStyle(
                                                       color: Colors.white,
+                                                      fontFamily: 'RobotoMono',
                                                     ),
                                                   ),
                                             ),
@@ -130,6 +128,7 @@ class HomePage extends StatelessWidget {
                                                 "Hello, I’m S.Ganapathi Subramaniam (Gana)!",
                                                 style: textStyle.copyWith(
                                                   fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
                                                 ),
                                               ),
                                               const SizedBox(height: 8),
@@ -145,7 +144,9 @@ class HomePage extends StatelessWidget {
                                               const SizedBox(height: 8),
                                               Text(
                                                 "My motto: LISTEN | LEARN | LEAD",
-                                                style: textStyle,
+                                                style: textStyle.copyWith(
+                                                  fontStyle: FontStyle.italic,
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -160,6 +161,8 @@ class HomePage extends StatelessWidget {
                                                       'Ganapathi Subramaniam',
                                                       style: TextStyle(
                                                         color: Colors.white,
+                                                        fontFamily:
+                                                            'RobotoMono',
                                                       ),
                                                     ),
                                           ),

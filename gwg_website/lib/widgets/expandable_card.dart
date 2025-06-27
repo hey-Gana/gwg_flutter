@@ -22,10 +22,11 @@ class _ExpandableCardState extends State<ExpandableCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      //color: Colors.white.withOpacity(0.1),
+      color: Colors.white.withAlpha(13), // translucent white background
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
       child: InkWell(
+        borderRadius: BorderRadius.circular(16),
         onTap: () => setState(() => isExpanded = !isExpanded),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -35,6 +36,7 @@ class _ExpandableCardState extends State<ExpandableCard> {
               Text(
                 widget.title,
                 style: const TextStyle(
+                  fontFamily: 'RobotoMono',
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -43,7 +45,11 @@ class _ExpandableCardState extends State<ExpandableCard> {
               const SizedBox(height: 8),
               Text(
                 widget.description,
-                style: const TextStyle(color: Colors.white70),
+                style: const TextStyle(
+                  fontFamily: 'RobotoMono',
+                  color: Colors.white70,
+                  fontSize: 14,
+                ),
               ),
               if (isExpanded) ...[
                 const SizedBox(height: 16),

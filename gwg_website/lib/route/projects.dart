@@ -31,6 +31,7 @@ class Projects extends StatelessWidget {
                         child: Text(
                           "Projects",
                           style: TextStyle(
+                            fontFamily: 'RobotoMono',
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -42,7 +43,7 @@ class Projects extends StatelessWidget {
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 32.0),
                           child: glassyContainer(
-                            child: projectSection(project),
+                            child: projectSection(context, project),
                           ),
                         );
                       }),
@@ -68,7 +69,7 @@ class Projects extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.3),
+                color: const Color.fromARGB(255, 0, 0, 0).withAlpha(76),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: child,
@@ -79,7 +80,7 @@ class Projects extends StatelessWidget {
     );
   }
 
-  Widget projectSection(Project project) {
+  Widget projectSection(BuildContext context, Project project) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final isWide = constraints.maxWidth > 850;
@@ -90,6 +91,7 @@ class Projects extends StatelessWidget {
             Text(
               project.title,
               style: const TextStyle(
+                fontFamily: 'RobotoMono',
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
@@ -101,7 +103,11 @@ class Projects extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 12.0),
                 child: Text(
                   desc,
-                  style: const TextStyle(fontSize: 16, color: Colors.white70),
+                  style: const TextStyle(
+                    fontFamily: 'RobotoMono',
+                    fontSize: 16,
+                    color: Colors.white70,
+                  ),
                 ),
               ),
             ),
@@ -111,11 +117,7 @@ class Projects extends StatelessWidget {
                 final uri = Uri.parse(project.url);
                 if (await canLaunchUrl(uri)) {
                   await launchUrl(uri, mode: LaunchMode.externalApplication);
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Could not launch URL')),
-                  );
-                }
+                } else {}
               },
               style: TextButton.styleFrom(
                 foregroundColor: Colors.white,
@@ -131,6 +133,7 @@ class Projects extends StatelessWidget {
               child: const Text(
                 "Link",
                 style: TextStyle(
+                  fontFamily: 'RobotoMono',
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
@@ -147,6 +150,7 @@ class Projects extends StatelessWidget {
               (context, error, stackTrace) => Text(
                 project.title,
                 style: const TextStyle(
+                  fontFamily: 'RobotoMono',
                   fontStyle: FontStyle.italic,
                   fontSize: 16,
                   color: Colors.grey,
@@ -176,7 +180,7 @@ class Projects extends StatelessWidget {
   }
 }
 
-// Example project list
+//project list
 final List<Project> projects = [
   Project(
     title: "AutoApplyLn",

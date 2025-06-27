@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-/// Represents a single navigation destination.
+//Navigation destination model
 class Destination {
   final String label;
   final Icon icon;
-
   const Destination(this.label, this.icon);
 }
 
-/// Static list of destinations.
+// list of destinations
 const List<Destination> destinations = <Destination>[
   Destination('About Me', Icon(Icons.g_mobiledata_outlined)),
   Destination('Experience', Icon(Icons.beenhere_outlined)),
   Destination('Education', Icon(Icons.school_outlined)),
   Destination('Projects', Icon(Icons.token_outlined)),
   Destination('Hobbies', Icon(Icons.local_play_outlined)),
-  // Destination("Contact Me", Icon(Icons.contact_phone_outlined)),
   Destination('Resume', Icon(Icons.file_present_outlined)),
 ];
 
@@ -24,8 +22,7 @@ class NavRail extends StatelessWidget {
   final int selectedIndex;
 
   const NavRail({super.key, required this.selectedIndex});
-
-  /// Launch resume PDF in a new browser tab
+  //open resume
   static Future<void> _launchResumePdf() async {
     final uri = Uri.base.resolve(
       'assets/resume/Ganapathi_Subramaniam_S_Resume.pdf',
@@ -44,24 +41,32 @@ class NavRail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final labelStyle = Theme.of(context).textTheme.titleSmall?.copyWith(
+      fontFamily: 'RobotoMono',
+      color: Colors.white,
+      fontWeight: FontWeight.w500,
+    );
+
     return Container(
       color: const Color.fromARGB(255, 109, 109, 112),
       child: Column(
         children: [
           Expanded(
             child: NavigationRail(
-              //backgroundColor: const Color.fromARGB(255, 109, 109, 112),
               selectedIndex: selectedIndex,
               labelType: NavigationRailLabelType.all,
+              selectedLabelTextStyle: labelStyle,
+              unselectedLabelTextStyle: labelStyle?.copyWith(
+                color: Colors.white70,
+                fontWeight: FontWeight.w400,
+              ),
               destinations:
-                  destinations
-                      .map(
-                        (d) => NavigationRailDestination(
-                          icon: d.icon,
-                          label: Text(d.label),
-                        ),
-                      )
-                      .toList(),
+                  destinations.map((d) {
+                    return NavigationRailDestination(
+                      icon: d.icon,
+                      label: Text(d.label),
+                    );
+                  }).toList(),
               onDestinationSelected: (int index) {
                 switch (index) {
                   case 0:
@@ -79,9 +84,6 @@ class NavRail extends StatelessWidget {
                   case 4:
                     Navigator.pushReplacementNamed(context, '/hobbies');
                     break;
-                  // case 5:
-                  //   Navigator.pushReplacementNamed(context, '/contact');
-                  //   break;
                   case 5:
                     _launchResumePdf();
                     break;
@@ -92,10 +94,7 @@ class NavRail extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: PopupMenuButton<int>(
-              icon: const Icon(
-                Icons.webhook_sharp,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
+              icon: const Icon(Icons.webhook_sharp, color: Colors.black),
               onSelected: (value) {
                 switch (value) {
                   case 0:
@@ -124,11 +123,29 @@ class NavRail extends StatelessWidget {
               },
               itemBuilder:
                   (context) => const [
-                    PopupMenuItem<int>(value: 0, child: Text('LinkedIn')),
-                    PopupMenuItem<int>(value: 1, child: Text('GitHub')),
-                    PopupMenuItem<int>(value: 2, child: Text('Goodreads')),
+                    PopupMenuItem<int>(
+                      value: 0,
+                      child: Text(
+                        'LinkedIn',
+                        style: TextStyle(fontFamily: 'RobotoMono'),
+                      ),
+                    ),
+                    PopupMenuItem<int>(
+                      value: 1,
+                      child: Text(
+                        'GitHub',
+                        style: TextStyle(fontFamily: 'RobotoMono'),
+                      ),
+                    ),
+                    PopupMenuItem<int>(
+                      value: 2,
+                      child: Text(
+                        'Goodreads',
+                        style: TextStyle(fontFamily: 'RobotoMono'),
+                      ),
+                    ),
                   ],
-              color: const Color.fromARGB(255, 0, 0, 0),
+              color: Colors.black,
             ),
           ),
         ],

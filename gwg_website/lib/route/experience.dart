@@ -12,6 +12,60 @@ class Experience extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 600;
 
+    const headingStyle = TextStyle(
+      fontFamily: 'RobotoMono',
+      fontSize: 28,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    );
+
+    const subHeadingStyle = TextStyle(
+      fontFamily: 'RobotoMono',
+      fontSize: 22,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    );
+
+    const timePeriodStyle = TextStyle(
+      fontFamily: 'RobotoMono',
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    );
+
+    const locationStyle = TextStyle(
+      fontFamily: 'RobotoMono',
+      fontSize: 14,
+      color: Colors.white70,
+    );
+
+    const positionStyle = TextStyle(
+      fontFamily: 'RobotoMono',
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    );
+
+    const companyStyle = TextStyle(
+      fontFamily: 'RobotoMono',
+      fontSize: 14,
+      fontStyle: FontStyle.italic,
+      color: Colors.white70,
+    );
+
+    const descriptionStyle = TextStyle(
+      fontFamily: 'RobotoMono',
+      fontSize: 13,
+      color: Colors.white,
+    );
+
+    const chipTextStyle = TextStyle(
+      fontFamily: 'RobotoMono',
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      color: Colors.white,
+    );
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -31,46 +85,44 @@ class Experience extends StatelessWidget {
                   child: Column(
                     children: [
                       const Center(
-                        child: Text(
-                          "Work Experience",
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
+                        child: Text("Work Experience", style: headingStyle),
                       ),
                       const SizedBox(height: 32),
 
                       // ✅ Responsive timeline
                       isMobile
-                          ? _buildMobileTimeline()
-                          : _buildDesktopTimeline(),
+                          ? _buildMobileTimeline(
+                            timePeriodStyle,
+                            locationStyle,
+                            positionStyle,
+                            companyStyle,
+                            descriptionStyle,
+                          )
+                          : _buildDesktopTimeline(
+                            timePeriodStyle,
+                            locationStyle,
+                            positionStyle,
+                            companyStyle,
+                            descriptionStyle,
+                          ),
 
                       const SizedBox(height: 48),
                       const Center(
-                        child: Text(
-                          "Tech Stack",
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
+                        child: Text("Tech Stack", style: headingStyle),
                       ),
                       const SizedBox(height: 24),
                       glassyContainer(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            sectionSubHeading("Languages"),
-                            buildTechChips(languages),
+                            sectionSubHeading("Languages", subHeadingStyle),
+                            buildTechChips(languages, chipTextStyle),
                             const SizedBox(height: 16),
-                            sectionSubHeading("Frameworks"),
-                            buildTechChips(frameworks),
+                            sectionSubHeading("Frameworks", subHeadingStyle),
+                            buildTechChips(frameworks, chipTextStyle),
                             const SizedBox(height: 16),
-                            sectionSubHeading("Tools"),
-                            buildTechChips(tools),
+                            sectionSubHeading("Tools", subHeadingStyle),
+                            buildTechChips(tools, chipTextStyle),
                           ],
                         ),
                       ),
@@ -87,7 +139,13 @@ class Experience extends StatelessWidget {
     );
   }
 
-  Widget _buildDesktopTimeline() {
+  Widget _buildDesktopTimeline(
+    TextStyle timePeriodStyle,
+    TextStyle locationStyle,
+    TextStyle positionStyle,
+    TextStyle companyStyle,
+    TextStyle descriptionStyle,
+  ) {
     return glassyContainer(
       child: FixedTimeline.tileBuilder(
         builder: TimelineTileBuilder.connected(
@@ -100,24 +158,22 @@ class Experience extends StatelessWidget {
                 children: [
                   Text(
                     experienceData[index].timePeriod,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+                    style: timePeriodStyle,
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    experienceData[index].location,
-                    style: const TextStyle(fontSize: 14, color: Colors.white70),
-                  ),
+                  Text(experienceData[index].location, style: locationStyle),
                 ],
               ),
           contentsBuilder: (context, index) {
             final experience = experienceData[index];
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
-              child: _buildExperienceContent(experience),
+              child: _buildExperienceContent(
+                experience,
+                positionStyle,
+                companyStyle,
+                descriptionStyle,
+              ),
             );
           },
           indicatorBuilder:
@@ -131,7 +187,13 @@ class Experience extends StatelessWidget {
     );
   }
 
-  Widget _buildMobileTimeline() {
+  Widget _buildMobileTimeline(
+    TextStyle timePeriodStyle,
+    TextStyle locationStyle,
+    TextStyle positionStyle,
+    TextStyle companyStyle,
+    TextStyle descriptionStyle,
+  ) {
     return glassyContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,24 +204,16 @@ class Experience extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      exp.timePeriod,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
+                    Text(exp.timePeriod, style: timePeriodStyle),
                     const SizedBox(height: 4),
-                    Text(
-                      exp.location,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.white70,
-                      ),
-                    ),
+                    Text(exp.location, style: locationStyle),
                     const SizedBox(height: 8),
-                    _buildExperienceContent(exp),
+                    _buildExperienceContent(
+                      exp,
+                      positionStyle,
+                      companyStyle,
+                      descriptionStyle,
+                    ),
                     const Divider(color: Colors.white30, thickness: 1),
                   ],
                 ),
@@ -169,34 +223,22 @@ class Experience extends StatelessWidget {
     );
   }
 
-  Widget _buildExperienceContent(ExperienceModel experience) {
+  Widget _buildExperienceContent(
+    ExperienceModel experience,
+    TextStyle positionStyle,
+    TextStyle companyStyle,
+    TextStyle descriptionStyle,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          experience.position,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        Text(
-          experience.companyName,
-          style: const TextStyle(
-            fontSize: 14,
-            fontStyle: FontStyle.italic,
-            color: Colors.white70,
-          ),
-        ),
+        Text(experience.position, style: positionStyle),
+        Text(experience.companyName, style: companyStyle),
         const SizedBox(height: 8),
         ...experience.descriptions.map(
           (desc) => Padding(
             padding: const EdgeInsets.only(bottom: 4),
-            child: Text(
-              "• $desc",
-              style: const TextStyle(fontSize: 13, color: Colors.white),
-            ),
+            child: Text("• $desc", style: descriptionStyle),
           ),
         ),
       ],
@@ -214,7 +256,12 @@ class Experience extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.3),
+                color: const Color.fromARGB(
+                  255,
+                  0,
+                  0,
+                  0,
+                ).withAlpha(76), // replaced withAlpha for opacity fix
                 borderRadius: BorderRadius.circular(16),
               ),
               child: child,
@@ -225,21 +272,14 @@ class Experience extends StatelessWidget {
     );
   }
 
-  Widget sectionSubHeading(String title) {
+  Widget sectionSubHeading(String title, TextStyle style) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 22,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
+      child: Text(title, style: style),
     );
   }
 
-  Widget buildTechChips(List<String> items) {
+  Widget buildTechChips(List<String> items, TextStyle textStyle) {
     return Wrap(
       spacing: 16.0,
       runSpacing: 16.0,
@@ -251,43 +291,36 @@ class Experience extends StatelessWidget {
                 color: const Color(0xFF2A2B3C),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Text(
-                tech,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              child: Text(tech, style: textStyle),
             );
           }).toList(),
     );
   }
 }
 
-// 🔍 Experience Data
+//Experience Data
 final List<ExperienceModel> experienceData = [
   ExperienceModel(
     companyName: 'Kaplan Institute - Illinois Institute of Technology',
     timePeriod: 'Sep 2023 - May 2025',
-    position: 'Data Analyst & Operations',
+    position: 'Operations & Data Analyst',
     location: 'Chicago, USA',
     descriptions: [
-      'Developed dashboards and automation scripts for the academic leadership team...',
-      'Mentored students in validating startup ideas...',
-      'Led workshops for the Startup Studio club...',
+      'Developed dashboards and automation scripts for the academic leadership team, allowing them to assess and address student needs, enhancing support and enriching program quality.',
+      'Mentored students in validating startup ideas, leading to 4 startups competing in the Annual Pitchfest Competition.',
+      'Led workshops for the Startup Studio club on Leadership, Strategy, Solutioning, and Customer Discovery, boosting student engagement by 200%.',
     ],
   ),
   ExperienceModel(
     companyName: 'Syndigo LLC',
-    timePeriod: 'Jun 2025 - Nov 2025',
+    timePeriod: 'Jun 2024 - Nov 2024',
     position: 'Software Intern',
     location: 'Chicago, USA',
     descriptions: [
-      'Developed a low-code automation framework...',
-      'Orchestrated a continuous testing pipeline...',
-      'Created a validation module automating checks...',
-      'Operationalized end-to-end (E2E) automation...',
+      'Developed a low-code automation framework enabling citizen testers to independently create and execute test cases, increasing automation coverage by 20%.',
+      'Orchestrated a continuous testing pipeline with 80% API coverage by automating 25+ APIs and 100+ scenarios using Python and Playwright, ensuring data consistency and business alignment.',
+      'Created a validation module automating checks for 25+ APIs in Azure storage, ensuring 100% data transformation accuracy across multiple products.',
+      'Operationalized end-to-end (E2E) automation, achieving 40% UI test coverage post data model synchronization, enhancing overall testing efficiency and system accuracy.',
     ],
   ),
   ExperienceModel(
@@ -296,16 +329,16 @@ final List<ExperienceModel> experienceData = [
     position: 'Associate',
     location: 'Bangalore, India',
     descriptions: [
-      'Designed an extensible Automated Reporting System...',
-      'Developed a reusable Test Automation Framework...',
-      'Implemented automation for 200+ regression test cases...',
-      'Spearheaded adoption of automation frameworks...',
-      'Orchestrated sprint-wise functional demos...',
+      'Designed and Engineered an extensible Automated Reporting System using Python and HTML/CSS for senior leadership, cutting manual effort and reporting time by 95%.',
+      'Developed a reusable Test Automation Framework with Python and Robot Framework, improving testing efficiency and slashing regression effort from 70 to 3 man-days.',
+      'Implemented automation for 200+ regression test cases and added new scenarios each sprint, increasing coverage by 40% and maintaining test quality.',
+      'Spearheaded adoption of automation frameworks across client projects, boosting offshore collaboration and enabling effective resource management by the senior leadership team, ultimately improving project delivery.',
+      'Orchestrated sprint-wise functional demos, expediting production deployments by 1 week each and improving stakeholder alignment and trust.',
     ],
   ),
 ];
 
-// 💡 Tech Stack
+//Tech Stack
 final List<String> languages = ['Dart', 'Python', 'JavaScript', 'Java', 'SQL'];
 final List<String> frameworks = [
   'Flutter',

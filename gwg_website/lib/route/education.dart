@@ -7,6 +7,33 @@ class Education extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const headingStyle = TextStyle(
+      fontFamily: 'RobotoMono',
+      fontSize: 28,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    );
+
+    const titleStyle = TextStyle(
+      fontFamily: 'RobotoMono',
+      fontSize: 22,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    );
+
+    const bold16Style = TextStyle(
+      fontFamily: 'RobotoMono',
+      fontWeight: FontWeight.bold,
+      fontSize: 16,
+      color: Colors.white,
+    );
+
+    const regular16Style = TextStyle(
+      fontFamily: 'RobotoMono',
+      fontSize: 16,
+      color: Colors.white70,
+    );
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -26,18 +53,11 @@ class Education extends StatelessWidget {
                   child: Column(
                     children: [
                       const Center(
-                        child: Text(
-                          "Education",
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
+                        child: Text("Education", style: headingStyle),
                       ),
                       const SizedBox(height: 32),
 
-                      // 🎓 IIT Section
+                      // IIT Section
                       glassyContainer(
                         child: educationSection(
                           imagePath: 'images/iit.png',
@@ -50,11 +70,14 @@ class Education extends StatelessWidget {
                               "Mobile Application Development, Software Testing & Analysis",
                           organizations:
                               "Startup Studio Club, SEDS - Students for the Exploration & Development of Space",
+                          titleStyle: titleStyle,
+                          degreeStyle: regular16Style,
+                          boldTextStyle: bold16Style,
                         ),
                       ),
                       const SizedBox(height: 32),
 
-                      // 🎓 SASTRA Section
+                      //SASTRA Section
                       glassyContainer(
                         child: educationSection(
                           imagePath: 'images/sastra.png',
@@ -66,6 +89,9 @@ class Education extends StatelessWidget {
                               "Management Information Systems, Operation Research",
                           organizations:
                               "Entrepreneurship Club (E-Cell Sastra), Sakshama - Mechanical Engineering Club",
+                          titleStyle: titleStyle,
+                          degreeStyle: regular16Style,
+                          boldTextStyle: bold16Style,
                         ),
                       ),
 
@@ -92,7 +118,7 @@ class Education extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black.withAlpha(76), // fixed opacity
                 borderRadius: BorderRadius.circular(16),
               ),
               child: child,
@@ -109,6 +135,9 @@ class Education extends StatelessWidget {
     required String degree,
     required String coursework,
     required String organizations,
+    required TextStyle titleStyle,
+    required TextStyle degreeStyle,
+    required TextStyle boldTextStyle,
   }) {
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -122,6 +151,7 @@ class Education extends StatelessWidget {
               (context, error, stackTrace) => Text(
                 title,
                 style: const TextStyle(
+                  fontFamily: 'RobotoMono',
                   fontStyle: FontStyle.italic,
                   fontSize: 16,
                   color: Colors.grey,
@@ -132,41 +162,17 @@ class Education extends StatelessWidget {
         final content = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
+            Text(title, style: titleStyle),
             const SizedBox(height: 10),
-            Text(
-              degree,
-              style: const TextStyle(fontSize: 16, color: Colors.white70),
-            ),
+            Text(degree, style: degreeStyle),
             const SizedBox(height: 20),
-            const Text(
-              "Coursework",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: Colors.white,
-              ),
-            ),
+            Text("Coursework", style: boldTextStyle),
             const SizedBox(height: 8),
-            Text(coursework, style: const TextStyle(color: Colors.white70)),
+            Text(coursework, style: degreeStyle),
             const SizedBox(height: 20),
-            const Text(
-              "Student Organizations",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: Colors.white,
-              ),
-            ),
+            Text("Student Organizations", style: boldTextStyle),
             const SizedBox(height: 8),
-            Text(organizations, style: const TextStyle(color: Colors.white70)),
+            Text(organizations, style: degreeStyle),
           ],
         );
 

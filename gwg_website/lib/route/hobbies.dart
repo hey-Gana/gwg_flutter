@@ -60,6 +60,32 @@ class _HobbiesState extends State<Hobbies> {
 
   @override
   Widget build(BuildContext context) {
+    const titleTextStyle = TextStyle(
+      fontFamily: 'RobotoMono',
+      fontSize: 28,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    );
+
+    const sectionTitleTextStyle = TextStyle(
+      fontFamily: 'RobotoMono',
+      fontSize: 18,
+      color: Colors.white,
+    );
+
+    const bodyTextStyle = TextStyle(
+      fontFamily: 'RobotoMono',
+      fontSize: 14,
+      color: Colors.white70,
+    );
+
+    const expandedTitleTextStyle = TextStyle(
+      fontFamily: 'RobotoMono',
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    );
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Container(
@@ -83,14 +109,7 @@ class _HobbiesState extends State<Hobbies> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Center(
-                          child: Text(
-                            "Hobbies",
-                            style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
+                          child: Text("Hobbies", style: titleTextStyle),
                         ),
                         const SizedBox(height: 32),
                         glassyContainer(
@@ -99,15 +118,12 @@ class _HobbiesState extends State<Hobbies> {
                             children: const [
                               Text(
                                 "Say hi to my fun side:",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                ),
+                                style: sectionTitleTextStyle,
                               ),
                               SizedBox(height: 10),
                               Text(
                                 "I believe in constantly learning and growing, which is why I take up a new hobby every year. This tradition began during the COVID-19 pandemic and has since become a cherished part of my life. Each year brings a new challenge and a fresh perspective, keeping my creative spirit alive.",
-                                style: TextStyle(color: Colors.white70),
+                                style: bodyTextStyle,
                               ),
                             ],
                           ),
@@ -135,6 +151,8 @@ class _HobbiesState extends State<Hobbies> {
                               onBack: () => _previousPage(_musicController),
                               onForward: () => _nextPage(_musicController),
                             ),
+                            expandedTitleTextStyle: expandedTitleTextStyle,
+                            descriptionTextStyle: bodyTextStyle,
                           ),
                         ),
                         const SizedBox(height: 24),
@@ -160,11 +178,10 @@ class _HobbiesState extends State<Hobbies> {
                                             horizontal: 10,
                                           ),
                                           child: Text(
-                                            photo.caption ?? '',
-                                            style: const TextStyle(
-                                              color: Colors.white70,
-                                              fontSize: 14,
+                                            photo.caption,
+                                            style: bodyTextStyle.copyWith(
                                               fontStyle: FontStyle.italic,
+                                              fontSize: 14,
                                             ),
                                             textAlign: TextAlign.center,
                                           ),
@@ -175,6 +192,8 @@ class _HobbiesState extends State<Hobbies> {
                               onBack: () => _previousPage(_photoController),
                               onForward: () => _nextPage(_photoController),
                             ),
+                            expandedTitleTextStyle: expandedTitleTextStyle,
+                            descriptionTextStyle: bodyTextStyle,
                           ),
                         ),
                         const SizedBox(height: 24),
@@ -193,6 +212,7 @@ class _HobbiesState extends State<Hobbies> {
                                       title: Text(
                                         book.title,
                                         style: const TextStyle(
+                                          fontFamily: 'RobotoMono',
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -200,6 +220,7 @@ class _HobbiesState extends State<Hobbies> {
                                       subtitle: Text(
                                         book.review,
                                         style: const TextStyle(
+                                          fontFamily: 'RobotoMono',
                                           color: Colors.white70,
                                         ),
                                       ),
@@ -216,6 +237,8 @@ class _HobbiesState extends State<Hobbies> {
                                     );
                                   }).toList(),
                             ),
+                            expandedTitleTextStyle: expandedTitleTextStyle,
+                            descriptionTextStyle: bodyTextStyle,
                           ),
                         ),
                       ],
@@ -238,7 +261,7 @@ class _HobbiesState extends State<Hobbies> {
         child: Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.3),
+            color: const Color.fromARGB(255, 0, 0, 0).withAlpha(76),
             borderRadius: BorderRadius.circular(16),
           ),
           child: child,
@@ -266,6 +289,8 @@ class _HobbiesState extends State<Hobbies> {
     required String title,
     required String description,
     required Widget expandedContent,
+    required TextStyle expandedTitleTextStyle,
+    required TextStyle descriptionTextStyle,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -278,16 +303,7 @@ class _HobbiesState extends State<Hobbies> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Flexible(
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+                Flexible(child: Text(title, style: expandedTitleTextStyle)),
                 Icon(
                   _isExpanded[index] ? Icons.expand_less : Icons.expand_more,
                   color: Colors.white70,
@@ -296,7 +312,7 @@ class _HobbiesState extends State<Hobbies> {
             ),
           ),
           const SizedBox(height: 10),
-          Text(description, style: const TextStyle(color: Colors.white70)),
+          Text(description, style: descriptionTextStyle),
           if (_isExpanded[index]) ...[
             const SizedBox(height: 16),
             expandedContent,
