@@ -17,6 +17,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.29.3'
+
       - name: Get dependencies
         run: flutter pub get
 
@@ -25,12 +26,11 @@ jobs:
 
       - name: Deploy to launchpad branch
         env:
-          GITHUB_TOKEN: ${{ secrets.WEB_DEPLOY_TKN }}
+          WEB_DEPLOY_TKN: ${{ secrets.WEB_DEPLOY_TKN }}
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
-          # Create or checkout launchpad branch
           git fetch origin launchpad || true
           if git show-ref --quiet refs/heads/launchpad; then
             git checkout launchpad
@@ -38,15 +38,14 @@ jobs:
             git checkout -b launchpad
           fi
 
-          # Remove old files
           git rm -rf .
 
-          # Copy build files from build/web
           cp -r build/web/* .
           cp -r build/web/.* . 2>/dev/null || true
 
-          # Commit & push
           git add .
-          git commit -m "Deploy updated web build"
-          git push origin launchpad --force
+          git commit -m "Deploy updated web build" || echo "Nothing to commit"
 
+          git remote set-url origin https://hey-Gana:${WEB_DEPLOY_TKN}@github.com/hey-Gana/gana_website.git
+
+          git push origin launchpad --force
