@@ -1,2 +1,2 @@
 # gana_website
-Flutter app for Ganpathi Portfolio. 
+Ganpathi Portfolio 
