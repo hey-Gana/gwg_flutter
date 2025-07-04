@@ -1,3 +1,2 @@
-# gwg_website
-
-A new Flutter project.
+# gana_website
+Flutter app for Ganpathi Portfolio. 
