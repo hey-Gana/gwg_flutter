@@ -1,2 +1,3 @@
-# gwg_flutter
-Flutter app for personal website.
+# gwg_website
+
+A new Flutter project.

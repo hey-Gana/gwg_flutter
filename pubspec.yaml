@@ -25,7 +25,7 @@ flutter:
 
   assets:
     - images/
-    - assets/resume/Ganapathi_Subramaniam_S_Resume.pdf
+    # - assets/resume/Ganapathi_Subramaniam_S_Resume.pdf
 
   fonts:
     - family: RobotoMono
