@@ -25,7 +25,7 @@ jobs:
 
       - name: Deploy to launchpad branch
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.WEB_DEPLOY_TKN }}
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
