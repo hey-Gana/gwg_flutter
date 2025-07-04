@@ -24,15 +24,15 @@ class NavRail extends StatelessWidget {
   const NavRail({super.key, required this.selectedIndex});
   //open resume
   static Future<void> _launchResumePdf() async {
-    final uri = Uri.base.resolve(
-      'assets/resume/Ganapathi_Subramaniam_S_Resume.pdf',
+    final uri = Uri.parse(
+      'https://hey-Gana.github.io/gana_website/assets/resume/Ganapathi_Subramaniam_S_Resume.pdf',
     );
 
     if (await canLaunchUrl(uri)) {
       await launchUrl(
         uri,
         mode: LaunchMode.externalApplication,
-        webOnlyWindowName: '_blank', // Open in new tab
+        webOnlyWindowName: '_blank',
       );
     } else {
       debugPrint('Could not launch $uri');
