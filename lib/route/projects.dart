@@ -191,4 +191,15 @@ final List<Project> projects = [
     imagePath: 'images/autoApplyLn.png',
     url: 'https://github.com/hey-Gana/autoApplyLn',
   ),
+  Project(
+    title: "TacTics - Competitive twists to classical Tic-Tac-Toe",
+    descriptions: [
+      "1. Designed and developed a multi-variant Tic-Tac-Toe mobile app in Flutter with efficient game logic and responsive UI.",
+      "2. Integrated AI opponent using adversarial search (Minimax), enabling intelligent single-player gameplay.",
+      "3. Optimized win/loss/draw evaluation with O(1) time and space complexity for high-performance updates.",
+      "4. Built a scalable, reactive architecture supporting rule variation, stacking, and dynamic board interactions.",
+    ],
+    imagePath: 'images/TacTics_homepage.png',
+    url: 'https://github.com/hey-Gana/TacTics',
+  ),
 ];
